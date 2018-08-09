@@ -25,7 +25,6 @@ import java.lang.reflect.Method;
  *      01.转发
  *      02.重定向
  *      03.不返回==》 ajax
- *
  *    extends HttpServlet
  */
 public abstract class BaseServlet extends HttpServlet{
@@ -39,6 +38,7 @@ public abstract class BaseServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
