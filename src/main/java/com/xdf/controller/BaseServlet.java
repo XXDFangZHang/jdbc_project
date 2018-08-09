@@ -73,16 +73,12 @@ public abstract class BaseServlet extends HttpServlet{
      */
     private void toView(HttpServletRequest req, HttpServletResponse resp, Object result) throws ServletException, IOException {
        if (result==null){
-           System.out.println("=====没有返回值=====");
        }else {  //要么 json  要么字符串
             if (result instanceof String){//返回值字符串
                 String  viewName=result.toString()+".jsp";
-                System.out.println("====>最终的跳转页面===》"+viewName);
                 req.getRequestDispatcher(viewName).forward(req,resp);
             }else{//返回值是json
-                System.out.println("====>json数据的处理===》");
                String resultJson= (String) JSON.toJSONString(result);
-                System.out.println("json=====>"+resultJson);
                 PrintWriter writer=resp.getWriter();
                 writer.write(resultJson);
                 writer.flush();
