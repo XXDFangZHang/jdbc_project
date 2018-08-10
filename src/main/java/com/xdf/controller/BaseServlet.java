@@ -44,7 +44,6 @@ public abstract class BaseServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
       //获取用户的请求  请求中必须携带一个参数===》方法名称 methodName
      String methodName=  req.getParameter("methodName");
-        System.out.println("=====01:先进入");
      //根据用户传递的参数   确定执行哪个子servlet中的这个methodName方法
       //用户需要指定的方法
         Method method=null;
@@ -57,7 +56,6 @@ public abstract class BaseServlet extends HttpServlet{
                 //找到方法
                 method= getServletClass().getDeclaredMethod(methodName,HttpServletRequest.class,HttpServletResponse.class);
                 result= method.invoke(this,req,resp); //执行方法
-                System.out.println("======>获取了 需要返回的页面"+result);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -3,8 +3,10 @@ package com.xdf.dao.user;
 import com.xdf.bean.Users;
 import com.xdf.util.BaseDao;
 import com.xdf.util.PageUtil;
+import com.xdf.util.ResultSetUtil;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -16,9 +18,39 @@ public class UserDaoImpl  extends BaseDao implements UserDao {
      */
     @Override
     public int add(Users users) {
-        String sql="INSERT INTO news_user(userName,`password`,email,userType) VALUES(?,?,?,?)";
-        Object[] params={users.getUserName(),users.getPassword(),users.getEmail(),users.getUserType()};
-        return executeUpdate(sql,params);
+        String sql = "INSERT INTO news_user(userName,`password`,email,userType) VALUES(?,?,?,?)";
+        Object[] params = {users.getUserName(), users.getPassword(), users.getEmail(), users.getUserType()};
+        return executeUpdate(sql, params);
+    }
+
+    /**
+     * 验证用户名是否存在的操作/密码是否正确
+     */
+    @Override
+    public String validateName(String userName) {
+        String sql = "SELECT password FROM news_user WHERE userName=?";
+        rs = executeQuery(sql, userName);
+        String password = null;
+        try { //获取密码
+            if (rs.next()) {
+                password = rs.getString("password");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return password;
+    }
+
+    /**
+     * 登录
+     */
+    @Override
+    public Users login(String userName, String password) {
+        String sql="SELECT id as users_id,userName,PASSWORD,email,userType FROM news_user where userName=? and password=?";
+        Object [] params={userName,password};
+        rs=executeQuery(sql,params);
+        Users users= ResultSetUtil.eachOne(rs,Users.class);
+        return users;
     }
 
     @Override
@@ -50,4 +82,7 @@ public class UserDaoImpl  extends BaseDao implements UserDao {
     public List<Users> findAllByPage(PageUtil util, Object... params) {
         return null;
     }
+
+
+
 }

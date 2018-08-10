@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +68,7 @@
 			<div class="row-fluid">
 				<div class="well span5 center login-box">
 					<div class="alert alert-info">
-						Please login with your Username and Password.
+						登录页面
 					</div>
 					<form class="form-horizontal" action="login?methodName=login" method="post">
 						<fieldset>
@@ -81,13 +82,8 @@
 							</div>
 							<div class="clearfix"></div>
 
-							<div class="input-prepend">
-							<label class="remember" for="remember"><input type="checkbox" id="remember" />Remember me</label>
-							</div>
-							<div class="clearfix"></div>
-
 							<p class="center span5">
-							<button type="submit" class="btn btn-primary">Login</button>
+							<button type="submit" class="btn btn-primary">登录</button>
 							</p>
 						</fieldset>
 					</form>

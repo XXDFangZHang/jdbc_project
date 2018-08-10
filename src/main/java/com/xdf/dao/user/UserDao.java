@@ -8,8 +8,11 @@ import com.xdf.dao.IBaseDao;
  */
 public interface UserDao extends IBaseDao<Users> {
 
-    /**
-     * 登录的操作
-     */
 
+    /**
+     * 验证用户名的操作
+     */
+    String validateName(String userName);
+
+    Users login(String userName, String password);
 }
