@@ -84,15 +84,17 @@
 <div class="modal hide fade" id="myModal">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Settings</h3>
+        <h3>温馨提示</h3>
     </div>
     <div class="modal-body">
-        <p>Here settings can be configured...</p>
+        <p>您是否确定删除...</p>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-        <a href="#" class="btn btn-primary">Save changes</a>
+        <a href="#" class="btn" data-dismiss="modal">关闭</a>
+        <a onclick="realDelete();" class="btn btn-primary">确认删除</a>
     </div>
+    <%--设置隐藏域 获取需要删除的id--%>
+    <input type="hidden" id="deleteId">
 </div>
 
 
@@ -171,7 +173,7 @@
 <%--ajax分页操作--%>
 <script type="text/javascript">
 
-    loadData(0);//加载数据  0 当前页
+    loadData(1);//加载数据  0 当前页
 
     function loadData(pageIndex) {//初始化数据的ajax操作
         $.ajax({
@@ -193,7 +195,8 @@
                        "                    <td class=\"center\">\n" +
                        "                        <span class=\"label label-warning\">"+dom.userType+"</span>\n" +
                        "                    </td>\n" +
-                       "                        <a class=\"btn btn-danger\" href=\"add.jsp\">\n" +
+                       "                    <td class=\"center\">\n" +
+                       "                        <a class=\"btn btn-danger\" onclick=\"showModal("+dom.users_id+");\">\n" +
                        "                            <i class=\"icon-trash icon-white\"></i>\n" +
                        "                            删除\n" +
                        "                        </a>\n" +
@@ -204,9 +207,8 @@
                //使用分页插件
                 $("#pagination").pagination(data.totalCount,
                     {
-                        current_page:data.pageIndex-1, //当前页面
+                        current_page:data.pageIndex, //当前页面
                         items_per_page:data.pageSize, //每页显示的条目数
-                        load_first_page:true,
                         prev_text:"上一页",
                         next_text:"下一页",
                         callback:loadData //回调函数
@@ -216,7 +218,23 @@
 
     };
 
+    /**
+     * 模态窗口的操作
+     */
+     function  showModal(delId) {
+         //显示模态窗口
+         $("#myModal").modal("show");
+         //给隐藏域赋值
+         $("#deleteId").val(delId);
+     }
 
+    /**
+     * 真正的删除
+     */
+    function realDelete() {
+         var id= $("#deleteId").val();
+         window.location.href="/home?methodName=deleteUser&id="+id;
+     }
 
 
 </script>

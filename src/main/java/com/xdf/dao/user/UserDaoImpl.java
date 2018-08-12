@@ -74,7 +74,9 @@ public class UserDaoImpl  extends BaseDao implements UserDao {
 
     @Override
     public int deleteByCondition(Serializable id) {
-        return 0;
+        String sql="delete from news_user where id=?";
+        int num= executeUpdate(sql,id);
+        return num;
     }
 
     @Override

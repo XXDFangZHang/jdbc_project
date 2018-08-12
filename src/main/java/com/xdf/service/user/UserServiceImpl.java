@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int deleteByCondition(Serializable id) {
-        return 0;
+        return userDao.deleteByCondition(id);
     }
 
     @Override
