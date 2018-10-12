@@ -8,7 +8,16 @@ public class Users implements Serializable {
     private String userName;//用户名
     private String password;//用户名
     private String email;//email
+    private String File;
     private Integer userType;//用户类型 0：管理员 1：普通用户
+
+    public String getFile() {
+        return File;
+    }
+
+    public void setFile(String file) {
+        File = file;
+    }
 
     public Users() {
     }

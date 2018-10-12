@@ -236,7 +236,6 @@
          window.location.href="/home?methodName=deleteUser&id="+id;
      }
 
-
 </script>
 </body>
 
