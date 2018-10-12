@@ -53,6 +53,25 @@ public class UserDaoImpl  extends BaseDao implements UserDao {
         return users;
     }
 
+
+    /**
+     * 查询总记录数
+     */
+    @Override
+    public int findRownum() {
+        String sql="SELECT COUNT(id) as count FROM news_user";
+         rs=executeQuery(sql);
+         int count=0;
+        try {
+            if (rs.next()){
+                count= rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     @Override
     public int deleteByCondition(Serializable id) {
         return 0;
@@ -73,14 +92,20 @@ public class UserDaoImpl  extends BaseDao implements UserDao {
         return null;
     }
 
-    @Override
-    public int findRownum() {
-        return 0;
-    }
+
+    /**
+     *
+     * （当前页-1）*pageSize
+     *   limit  ?,2
+     */
 
     @Override
     public List<Users> findAllByPage(PageUtil util, Object... params) {
-        return null;
+        String sql="SELECT id as users_id,userName,PASSWORD,email,userType FROM news_user limit ?,?";
+        Object[] p={(util.getPageIndex()-1)*util.getPageSize(),util.getPageSize()};
+        rs= executeQuery(sql,p);
+        List<Users>  list= ResultSetUtil.eachList(rs,Users.class);
+        return list;
     }
 
 

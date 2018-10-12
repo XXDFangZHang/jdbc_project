@@ -61,43 +61,24 @@
             <table class="table table-striped table-bordered bootstrap-datatable datatable">
                 <thead>
                 <tr>
-                    <th>Username</th>
-                    <th>Date registered</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>用户编号</th>
+                    <th>用户名</th>
+                    <th>用户邮箱</th>
+                    <th>用户类型</th>
                 </tr>
                 </thead>
-                <tbody>
-
-                <tr>
-                    <td>Lorem Ipsum</td>
-                    <td class="center">2012/03/01</td>
-                    <td class="center">Member</td>
-                    <td class="center">
-                        <span class="label label-warning">Pending</span>
-                    </td>
-                    <td class="center">
-                        <a class="btn btn-success" href="add.jsp">
-                            <i class="icon-zoom-in icon-white"></i>
-                            View
-                        </a>
-                        <a class="btn btn-info" href="add.jsp">
-                            <i class="icon-edit icon-white"></i>
-                            Edit
-                        </a>
-                        <a class="btn btn-danger" href="add.jsp">
-                            <i class="icon-trash icon-white"></i>
-                            Delete
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
+                <tbody id="list-content"></tbody>
             </table>
         </div>
     </div><!--/span-->
-
 </div><!--/row-->
+
+<%--引入自己的pagination--%>
+<div class="pagination" id="pagination"></div>
+
+
+
+
 
 <%-- 模态窗口--%>
 <div class="modal hide fade" id="myModal">
@@ -184,7 +165,61 @@
 <script src="js/jquery.history.js"></script>
 <!-- application script for Charisma demo -->
 <script src="js/charisma.js"></script>
+<%--引入分页插件--%>
+<script src="js/jquery.pagination.js"></script>
 
+<%--ajax分页操作--%>
+<script type="text/javascript">
+
+    loadData(0);//加载数据  0 当前页
+
+    function loadData(pageIndex) {//初始化数据的ajax操作
+        $.ajax({
+            url:"/home?methodName=findAllByPage",
+            type:"POST",
+            data:{"pageIndex":pageIndex},
+            success:function (data) {
+                //每次成功清除之前的数据
+                $("#list-content").html("");
+                var data=$.parseJSON(data);
+                 //遍历数据
+                $.each(data.list,function (i,dom) {
+                   $("#list-content").append(" <tr>\n" +
+                       "  <td>"+dom.users_id+"</td>\n" +
+                       "                    <td class=\"center\">"+dom.userName+"</td>\n" +
+                       "                    <td class=\"center\">\n" +
+                       "                        <span class=\"label label-warning\">"+dom.email+"</span>\n" +
+                       "                    </td>\n" +
+                       "                    <td class=\"center\">\n" +
+                       "                        <span class=\"label label-warning\">"+dom.userType+"</span>\n" +
+                       "                    </td>\n" +
+                       "                        <a class=\"btn btn-danger\" href=\"add.jsp\">\n" +
+                       "                            <i class=\"icon-trash icon-white\"></i>\n" +
+                       "                            删除\n" +
+                       "                        </a>\n" +
+                       "                    </td>\n" +
+                       "                </tr>");
+
+                });  // each结束
+               //使用分页插件
+                $("#pagination").pagination(data.totalCount,
+                    {
+                        current_page:data.pageIndex-1, //当前页面
+                        items_per_page:data.pageSize, //每页显示的条目数
+                        load_first_page:true,
+                        prev_text:"上一页",
+                        next_text:"下一页",
+                        callback:loadData //回调函数
+                    });
+            }//success回调函数
+        });
+
+    };
+
+
+
+
+</script>
 </body>
 
 </html>
